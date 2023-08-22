@@ -1,0 +1,176 @@
+#define _WIN32_WINNT 0x0500 
+
+#include <windows.h> 
+#define bt1 101
+
+
+
+LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
+
+
+
+
+
+char NombreClase[] = "Estilos";
+
+HWND ventana1;           
+
+HWND boton1;
+
+MSG mensajecomunica;     
+
+WNDCLASSEX estilo1;      
+
+
+
+int WINAPI WinMain (HINSTANCE hThisInstance,
+
+                     HINSTANCE hPrevInstance,
+
+                     LPSTR lpszArgument,
+
+                     int nCmdShow)
+
+{
+
+   
+
+    estilo1.hInstance = hThisInstance;
+
+    estilo1.lpszClassName = NombreClase;
+
+    estilo1.lpfnWndProc = WindowProcedure;
+
+    estilo1.style = CS_DBLCLKS;
+
+    estilo1.cbSize = sizeof (WNDCLASSEX);
+
+    estilo1.hIcon = LoadIcon (NULL, IDI_QUESTION);
+
+    estilo1.hIconSm = LoadIcon (NULL, IDI_INFORMATION);
+
+    estilo1.hCursor = LoadCursor (NULL, IDC_ARROW);
+
+    estilo1.lpszMenuName = NULL;  
+
+    estilo1.cbClsExtra = 0;
+
+    estilo1.cbWndExtra = 0;
+
+    estilo1.hbrBackground = (HBRUSH) COLOR_WINDOW;
+
+
+
+    
+
+    if (!RegisterClassEx (&estilo1))
+
+        return 0;
+
+
+
+
+    ventana1 = CreateWindowEx (
+
+           0,
+
+           NombreClase,         
+
+           ("Ventana de Prueba"),       
+
+           WS_OVERLAPPEDWINDOW|WS_BORDER,
+
+           400,       
+
+           70,       
+
+           644,                
+
+           575,                 
+
+           HWND_DESKTOP,
+
+           NULL,               
+
+           hThisInstance,
+
+           NULL
+
+           );
+
+
+
+    
+
+    ShowWindow (ventana1, nCmdShow);
+
+    ShowWindow(GetConsoleWindow(), SW_HIDE ); 
+
+
+
+   
+
+    while (GetMessage (&mensajecomunica, NULL, 0, 0))
+
+    {
+
+       
+
+        TranslateMessage(&mensajecomunica);
+
+        
+
+        DispatchMessage(&mensajecomunica);
+
+    }
+
+
+
+    return mensajecomunica.wParam;
+
+}
+
+
+
+LRESULT CALLBACK WindowProcedure (HWND ventana1, UINT mensajecomunica, WPARAM wParam, LPARAM lParam)
+
+{
+
+    switch (mensajecomunica) 
+
+    {
+
+        case WM_CLOSE: 
+
+        DestroyWindow(ventana1); 
+             break;
+             
+        case WM_DESTROY:
+        	PostQuitMessage(0);
+        break;
+            
+       case WM_CREATE:
+			boton1 = CreateWindowEx(0, "button", ("Prueba 1"), WS_VISIBLE | WS_CHILD | 0x00000001, 300, 300, 80, 25, ventana1, (HMENU)bt1 , GetModuleHandle(NULL), 0);
+       break;
+       
+       case WM_COMMAND:	
+       	if (LOWORD(bt1)==wParam){
+		   MessageBox(NULL, "Este es el primer mensaje con interfaz grafica.", "Mensaje Prueba", MB_OKCANCEL | MB_DEFBUTTON2);
+		   }
+		   else{
+		   	
+		   		PostQuitMessage(0);
+		   }
+       	break;
+       
+ 
+
+        default:  
+
+            return DefWindowProc (ventana1, mensajecomunica, wParam, lParam);
+
+    }
+
+return 0;
+
+}

@@ -1,0 +1,15 @@
+#include <ctype.h>
+#include <stdio.h>
+#include <iostream>
+ using namespace std;
+int main()
+{
+    char l = 'a';
+  cout<<"Ingrese un caracter: ";
+  cin>>l;
+ 
+    if (isalnum(l))
+        cout<<"\nEl caracter ingresado es alfanumerico\n";
+    else
+        cout<<"\nEl caracter ingresado no es alfanumerico\n";
+}
